@@ -1,0 +1,111 @@
+#!/bin/python
+import random
+import argparse
+import linecache
+
+
+def check(arg, lit, lista):
+    lista[0] = '*'
+    for i in range(len(arg)):
+        if arg[i] == lit:
+            lista.append(i)
+            lista[0] = '!'
+    return lista
+
+#komentarz
+def tox(arg,lista):
+    ret=[]
+    for i in range(len(arg)):
+        if lista.count(i)>0:
+            ret.append(arg[i])
+        elif arg[i] != ' ':
+            ret.append('_')
+        elif arg[i] == ' ':
+            ret.append(' ')
+    return ret
+
+def game(arg):
+    szub = ["""             _ 
+            |/  
+            |  
+            |
+            |  
+            | 
+            |
+            | """,
+            """             _ _ _ _
+            |/ 
+            |  
+            |  
+            |
+            | 
+            |
+            | """,
+            """             _ _ _ _
+            |/  |
+            |  (_)
+            |  
+            |
+            | 
+            |
+            | """,
+            """             _ _ _ _
+            |/  |
+            |  (_)
+            |  \|/
+            |   |
+            |  /|
+            |
+            | """]
+    haslo=""
+    po1 = ("konstantynopol", "technologia", "chiny", "python", "transcendencja")
+    po2 = ("czas ucieka", "rok psa", "zaginanie czasoprzestrzeni")
+    po3 = ("kocham zapach napalmu o poranku", "alleluja i do przodu")
+    po = [po1, po2, po3]
+    if arg.plik != None:
+        try:
+            plik = open(arg.plik, 'rU')
+        except FileNotFoundError:
+            print("Nie znaleziono pliku")
+            return 1
+        finally:
+            plik = open(arg.plik, 'rU')
+            max = len(plik.readlines())
+            licz = random.randint(0, max)
+            pom = linecache.getline(arg.plik, licz)
+            haslo = pom.rstrip('\n')
+            plik.close()
+
+    else:
+        haslo=random.choice(po[(arg.poziom-1)])
+    lista = ['!']
+    hasx=tox(haslo,lista)
+    kon=True
+    pr=3
+    while (kon and (pr>0)):
+        print(szub[3 - pr])
+        print(' '.join(hasx))
+        lit = input("Podaj literke:")
+        lista = check(haslo, lit, lista)
+        hasx = tox(haslo, lista)
+        kon = False
+        for i in range(len(haslo)):
+            if haslo[i] != hasx[i]:
+                kon = True
+        if lista[0] == '*':
+            pr -= 1
+    if pr == 0:
+        print(szub[3])
+        print(' '.join(haslo))
+        print("Niestety przegrales")
+    else:
+        print(szub[3 - pr])
+        print(' '.join(hasx))
+        print("Gratuluje wygrales")
+    return 0
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--poziom', default=1, type=int, choices=range(1, 4))
+parser.add_argument('--plik',type=str)
+# arg = parser.parse_args()
+game(parser.parse_args())
