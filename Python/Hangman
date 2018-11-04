@@ -58,9 +58,9 @@ def game(arg):
             |
             | """]
     wordknow=""
-    words1 = ("konstantynopol", "technologia", "chiny", "python", "transcendencja")
-    words2 = ("czas ucieka", "rok psa", "zaginanie czasoprzestrzeni")
-    words3 = ("kocham zapach napalmu o poranku", "alleluja i do przodu")
+    words1 = ("china", "technology", "darkness")
+    words2 = ("queue", "gallows", "encryption")
+    words3 = ("establishment", "honorableness", "vet")
     words = [words1, words2, words3]
     if arg.file != None:
         try:
@@ -85,7 +85,7 @@ def game(arg):
     while (continuat and (miss>0)):
         print(gallows[3 - miss])
         print(' '.join(wordknow))
-        lit = input("Enter the letter:")
+        lit = input("Enter the letter (only small):")
         listofknow = check(word, lit, listofknow)
         wordknow = encryption(word, listofknow)
         continuat = False
